@@ -8,6 +8,10 @@ export default class AppointmentsRepository {
     this.appointments = [];
   }
 
+  public all(): Appointment[] {
+    return this.appointments;
+  }
+
   public create(provider: string, date: Date): Appointment {
     const newAppointment = new Appointment(provider, date);
     this.appointments.push(newAppointment);
