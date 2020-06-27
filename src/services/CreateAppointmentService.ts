@@ -24,7 +24,7 @@ export default class CreateAppointmentService {
 
     // Cria uma entidade do typeORM mas não salvou na base ainda
     const newAppointment = this.appointmentsRepository.create({
-      provider,
+      providerId: provider,
       date: appointmentDate,
     });
 
