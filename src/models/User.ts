@@ -1,23 +1,24 @@
 import {
   Entity,
-  Column,
   PrimaryGeneratedColumn,
+  Column,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('appointments')
-export default class Appointment {
+@Entity('users')
+export default class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  provider: string;
+  name: string;
 
-  // Observar que nem todos os bancos tem suporte a esse tipo de dado
-  // se não tiver utilizar somente timestamp
-  @Column('timestamp with time zone')
-  date: Date;
+  @Column()
+  email: string;
+
+  @Column()
+  password: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
