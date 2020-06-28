@@ -1,6 +1,8 @@
 import { sign } from 'jsonwebtoken';
 import { getCustomRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
+
+import authConfig from '../config/auth';
 import UserRepository from '../repositories/UsersRepository';
 import User from '../models/User';
 
@@ -30,12 +32,12 @@ export default class CreateSessionService {
       throw Error('Invalid user or password');
     }
 
-    const token = sign({}, '3819dea8f1f71e34b8716ae533c81b6c', {
+    // Geração do JWT com o id do usuário no subject
+    const token = sign({}, authConfig.jwt.secret, {
       subject: user.id,
-      expiresIn: '1d',
+      expiresIn: authConfig.jwt.expiresIn,
     });
 
-    // TODO gerar o JWT
     return { user, token };
   }
 }

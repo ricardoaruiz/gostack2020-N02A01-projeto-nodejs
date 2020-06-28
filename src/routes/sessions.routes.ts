@@ -14,8 +14,8 @@ sessionRoutes.post('/', async (request, response) => {
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: removedPassword, ...userWithotPassword } = user;
-    response.json({ user: userWithotPassword, token });
+    const { password: removedPassword, ...userWithoutPassword } = user;
+    response.json({ user: userWithoutPassword, token });
   } catch (error) {
     response.status(400).json({ error: error.message });
   }
