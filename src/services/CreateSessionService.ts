@@ -5,6 +5,7 @@ import { compare } from 'bcryptjs';
 import authConfig from '../config/auth';
 import UserRepository from '../repositories/UsersRepository';
 import User from '../models/User';
+import AppError from '../errors/AppError';
 
 interface CreateSessionRequest {
   email: string;
@@ -24,12 +25,12 @@ export default class CreateSessionService {
 
     const user = await userRepository.findByEmail(data.email);
     if (!user) {
-      throw Error('Invalid user or password');
+      throw new AppError('Invalid user or password', 401);
     }
 
     const passwordMatched = await compare(data.password, user.password);
     if (!passwordMatched) {
-      throw Error('Invalid user or password');
+      throw new AppError('Invalid user or password', 401);
     }
 
     // Geração do JWT com o id do usuário no subject

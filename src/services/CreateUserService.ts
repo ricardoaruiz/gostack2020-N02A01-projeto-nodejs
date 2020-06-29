@@ -3,6 +3,8 @@ import { hash } from 'bcryptjs';
 import UsersRepository from '../repositories/UsersRepository';
 import User from '../models/User';
 
+import AppError from '../errors/AppError';
+
 interface CreateUserRequest {
   name: string;
   email: string;
@@ -16,7 +18,7 @@ export default class CreateUserService {
 
     const existUser = await usersRepository.findByEmail(email);
     if (existUser) {
-      throw Error('Email already used');
+      throw new AppError('Email already used');
     }
 
     // TODO criptografar a senha

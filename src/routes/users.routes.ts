@@ -25,22 +25,18 @@ userRoutes.get('/', async (request, response) => {
 });
 
 userRoutes.post('/', async (request, response) => {
-  try {
-    const { name, email, password } = request.body;
+  const { name, email, password } = request.body;
 
-    const createUserService = new CreateUserService();
-    const createdUser = await createUserService.execute({
-      name,
-      email,
-      password,
-    });
+  const createUserService = new CreateUserService();
+  const createdUser = await createUserService.execute({
+    name,
+    email,
+    password,
+  });
 
-    delete createdUser.password;
+  delete createdUser.password;
 
-    return response.status(201).json(createdUser);
-  } catch (error) {
-    response.status(400).send({ message: error.message });
-  }
+  return response.status(201).json(createdUser);
 });
 
 /**
@@ -53,19 +49,15 @@ userRoutes.patch(
   ensureAuthenticated,
   upload.single('avatar'),
   async (request, response) => {
-    try {
-      const updateUserAvatarService = new UpdateUserAvatarService();
-      const user = await updateUserAvatarService.execute({
-        user_id: request.user.id,
-        avatarFilename: request.file.filename,
-      });
+    const updateUserAvatarService = new UpdateUserAvatarService();
+    const user = await updateUserAvatarService.execute({
+      user_id: request.user.id,
+      avatarFilename: request.file.filename,
+    });
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...userWithoutPassword } = user;
-      return response.status(200).json(userWithoutPassword);
-    } catch (error) {
-      response.status(400).json({ error: error.message });
-    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...userWithoutPassword } = user;
+    return response.status(200).json(userWithoutPassword);
   },
 );
 
