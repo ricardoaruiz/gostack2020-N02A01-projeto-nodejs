@@ -23,6 +23,7 @@
     "prettier"
   ],
   "rules": {
+    "camelcase": 0,
     "@typescript-eslint/camelcase": "off",
     "import/extensions": [
       "error",
