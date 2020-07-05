@@ -8,6 +8,8 @@ import express from 'express';
 // lib é necessária e tem que ser importada logo após o express
 import 'express-async-errors';
 
+import cors from 'cors';
+
 import routes from './routes';
 import uploadConfig from './config/upload';
 import globalExceptionHandler from './errors/GlobalExceptionHandler';
@@ -15,6 +17,7 @@ import globalExceptionHandler from './errors/GlobalExceptionHandler';
 import './database';
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(routes);
 
