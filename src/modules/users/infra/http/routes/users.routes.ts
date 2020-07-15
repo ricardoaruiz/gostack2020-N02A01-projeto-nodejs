@@ -3,13 +3,13 @@ import { getCustomRepository } from 'typeorm';
 
 // Multer para fazer o controle do upload de imagens
 import multer from 'multer';
-import uploadConfig from '../config/upload';
+import uploadConfig from '@config/upload';
 
-import CreateUserService from '../services/CreateUserService';
-import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
+import CreateUserService from '@modules/users/services/CreateUserService';
+import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService';
 
-import UsersRepository from '../repositories/UsersRepository';
-import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+import UsersRepository from '@modules/users/repositories/UsersRepository';
+import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 
 const userRoutes = Router();
 const upload = multer(uploadConfig);

@@ -1,9 +1,9 @@
 import { getCustomRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 import UsersRepository from '../repositories/UsersRepository';
-import User from '../models/User';
+import User from '../infra/typeorm/entities/User';
 
-import AppError from '../errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 
 interface CreateUserRequest {
   name: string;

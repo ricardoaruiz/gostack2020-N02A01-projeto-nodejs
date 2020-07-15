@@ -1,6 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
 
-import User from '../models/User';
+import User from '../infra/typeorm/entities/User';
 
 @EntityRepository(User)
 export default class UsersRepository extends Repository<User> {

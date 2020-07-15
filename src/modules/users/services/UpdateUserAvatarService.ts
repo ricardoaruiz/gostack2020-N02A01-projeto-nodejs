@@ -3,9 +3,9 @@ import path from 'path';
 import { getCustomRepository } from 'typeorm';
 
 import UserRepository from '../repositories/UsersRepository';
-import uploadConfig from '../config/upload';
-import User from '../models/User';
-import AppError from '../errors/AppError';
+import uploadConfig from '../../../config/upload';
+import User from '../infra/typeorm/entities/User';
+import AppError from '../../../shared/errors/AppError';
 
 interface UpdateUserAvatarRequest {
   user_id: string;

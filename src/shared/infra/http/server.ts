@@ -10,11 +10,11 @@ import 'express-async-errors';
 
 import cors from 'cors';
 
-import routes from './routes';
-import uploadConfig from './config/upload';
-import globalExceptionHandler from './errors/GlobalExceptionHandler';
+import uploadConfig from '@config/upload';
+import globalExceptionHandler from '@shared/errors/GlobalExceptionHandler';
+import routes from '@shared/infra/http/routes';
 
-import './database';
+import '@shared/infra/typeorm';
 
 const app = express();
 app.use(cors());
