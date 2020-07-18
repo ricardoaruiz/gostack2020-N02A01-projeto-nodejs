@@ -1,22 +1,19 @@
-import { Router } from 'express';
-import { getCustomRepository } from 'typeorm';
-
-// Multer para fazer o controle do upload de imagens
-import multer from 'multer';
 import uploadConfig from '@config/upload';
-
+import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
+import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
+import IUserRepository from '@modules/users/repositories/IUserRespository';
 import CreateUserService from '@modules/users/services/CreateUserService';
 import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService';
+import { Router } from 'express';
+import multer from 'multer';
 
-import UsersRepository from '@modules/users/repositories/UsersRepository';
-import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
-
+// Multer para fazer o controle do upload de imagens
 const userRoutes = Router();
 const upload = multer(uploadConfig);
 
 userRoutes.get('/', async (request, response) => {
-  const usersRepository = getCustomRepository(UsersRepository);
-  const users = await (await usersRepository.find()).map(user => {
+  const userRepository: IUserRepository = new UsersRepository();
+  const users = await (await userRepository.find()).map(user => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...newUser } = user;
     return newUser;
@@ -27,7 +24,8 @@ userRoutes.get('/', async (request, response) => {
 userRoutes.post('/', async (request, response) => {
   const { name, email, password } = request.body;
 
-  const createUserService = new CreateUserService();
+  const userRepository: IUserRepository = new UsersRepository();
+  const createUserService = new CreateUserService(userRepository);
   const createdUser = await createUserService.execute({
     name,
     email,
@@ -49,7 +47,8 @@ userRoutes.patch(
   ensureAuthenticated,
   upload.single('avatar'),
   async (request, response) => {
-    const updateUserAvatarService = new UpdateUserAvatarService();
+    const userRepository: IUserRepository = new UsersRepository();
+    const updateUserAvatarService = new UpdateUserAvatarService(userRepository);
     const user = await updateUserAvatarService.execute({
       user_id: request.user.id,
       avatarFilename: request.file.filename,

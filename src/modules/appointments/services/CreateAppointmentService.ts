@@ -1,19 +1,17 @@
-import { startOfHour } from 'date-fns';
-import { getCustomRepository } from 'typeorm';
-
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
-import AppointmentsRepository from '@modules/appointments/repositories/AppointmentsRepository';
+import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentRepository';
 import AppError from '@shared/errors/AppError';
+import { startOfHour } from 'date-fns';
 
-interface Request {
+interface IRequest {
   provider: string;
   date: Date;
 }
 
 export default class CreateAppointmentService {
-  private appointmentsRepository = getCustomRepository(AppointmentsRepository);
+  constructor(private appointmentsRepository: IAppointmentsRepository) { }
 
-  public async execute({ provider, date }: Request): Promise<Appointment> {
+  public async execute({ provider, date }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
 
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
@@ -25,13 +23,10 @@ export default class CreateAppointmentService {
     }
 
     // Cria uma entidade do typeORM mas não salvou na base ainda
-    const newAppointment = this.appointmentsRepository.create({
+    const newAppointment = await this.appointmentsRepository.create({
       providerId: provider,
       date: appointmentDate,
     });
-
-    // Salva a entidade criada no banco de dados
-    await this.appointmentsRepository.save(newAppointment);
 
     return newAppointment;
   }

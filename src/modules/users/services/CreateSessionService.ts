@@ -1,29 +1,28 @@
-import { sign } from 'jsonwebtoken';
-import { getCustomRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
 
 import authConfig from '../../../config/auth';
-import UserRepository from '../repositories/UsersRepository';
-import User from '../infra/typeorm/entities/User';
 import AppError from '../../../shared/errors/AppError';
+import User from '../infra/typeorm/entities/User';
+import IUserRepository from '../repositories/IUserRespository';
 
-interface CreateSessionRequest {
+interface ICreateSessionRequest {
   email: string;
   password: string;
 }
 
-interface CreateSessionResponse {
+interface ICreateSessionResponse {
   user: User;
   token: string;
 }
 
 export default class CreateSessionService {
-  public async execute(
-    data: CreateSessionRequest,
-  ): Promise<CreateSessionResponse> {
-    const userRepository = getCustomRepository(UserRepository);
+  constructor(private userRepository: IUserRepository) { }
 
-    const user = await userRepository.findByEmail(data.email);
+  public async execute(
+    data: ICreateSessionRequest,
+  ): Promise<ICreateSessionResponse> {
+    const user = await this.userRepository.findByEmail(data.email);
     if (!user) {
       throw new AppError('Invalid user or password', 401);
     }
