@@ -1,12 +1,11 @@
 import AppointmentsRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentsRepository';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentRepository';
-import CreateAppointmentService from '@modules/appointments/services/CreateAppointmentService';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
-import { parseISO } from 'date-fns';
 import { Router } from 'express';
-import { container } from 'tsyringe';
+import AppointmentsController from '../controllers/AppointmentsController';
 
 const appointmentsRouter = Router();
+const appointmentsController = new AppointmentsController();
 
 // Adicionando o middleware de veriticação de autenticação em
 // todas as rotas de appointments
@@ -24,18 +23,6 @@ appointmentsRouter.get('/', async (request, response) => {
 /**
  * Rota de criação de appointments
  */
-appointmentsRouter.post('/', async (request, response) => {
-  const { provider, date } = request.body;
-
-  const parsedDate = parseISO(date);
-  const createAppointmentService = container.resolve(CreateAppointmentService);
-
-  const newAppointment = await createAppointmentService.execute({
-    provider,
-    date: parsedDate,
-  });
-
-  return response.json(newAppointment);
-});
+appointmentsRouter.post('/', appointmentsController.create);
 
 export default appointmentsRouter;

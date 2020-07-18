@@ -1,21 +1,9 @@
-import CreateSessionService from '@modules/users/services/CreateSessionService';
+import SessionsController from '@modules/users/infra/http/controllers/SessionsController';
 import { Router } from 'express';
-import { container } from 'tsyringe';
 
 const sessionRoutes = Router();
+const sessionsController = new SessionsController();
 
-sessionRoutes.post('/', async (request, response) => {
-  const { email, password } = request.body;
-
-  const createSessionService = container.resolve(CreateSessionService);
-  const { user, token } = await createSessionService.execute({
-    email,
-    password,
-  });
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { password: removedPassword, ...userWithoutPassword } = user;
-  response.json({ user: userWithoutPassword, token });
-});
+sessionRoutes.post('/', sessionsController.create);
 
 export default sessionRoutes;
