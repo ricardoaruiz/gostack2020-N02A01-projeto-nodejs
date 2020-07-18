@@ -14,7 +14,11 @@ import uploadConfig from '@config/upload';
 import globalExceptionHandler from '@shared/errors/GlobalExceptionHandler';
 import routes from '@shared/infra/http/routes';
 
+// Importando a configuração do typeorm (conexão com o banco de dados)
 import '@shared/infra/typeorm';
+
+// Importando o mecanismo que permite utilizar a injeção de dependências
+import '@shared/container';
 
 const app = express();
 app.use(cors());

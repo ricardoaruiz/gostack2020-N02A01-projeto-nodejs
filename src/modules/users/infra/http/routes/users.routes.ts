@@ -6,6 +6,7 @@ import CreateUserService from '@modules/users/services/CreateUserService';
 import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService';
 import { Router } from 'express';
 import multer from 'multer';
+import { container } from 'tsyringe';
 
 // Multer para fazer o controle do upload de imagens
 const userRoutes = Router();
@@ -24,8 +25,7 @@ userRoutes.get('/', async (request, response) => {
 userRoutes.post('/', async (request, response) => {
   const { name, email, password } = request.body;
 
-  const userRepository: IUserRepository = new UsersRepository();
-  const createUserService = new CreateUserService(userRepository);
+  const createUserService = container.resolve(CreateUserService);
   const createdUser = await createUserService.execute({
     name,
     email,
@@ -47,8 +47,7 @@ userRoutes.patch(
   ensureAuthenticated,
   upload.single('avatar'),
   async (request, response) => {
-    const userRepository: IUserRepository = new UsersRepository();
-    const updateUserAvatarService = new UpdateUserAvatarService(userRepository);
+    const updateUserAvatarService = container.resolve(UpdateUserAvatarService);
     const user = await updateUserAvatarService.execute({
       user_id: request.user.id,
       avatarFilename: request.file.filename,

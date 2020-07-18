@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { getCustomRepository } from 'typeorm';
+import { injectable, inject } from 'tsyringe';
 
 import uploadConfig from '../../../config/upload';
 import AppError from '../../../shared/errors/AppError';
@@ -12,8 +12,12 @@ interface IUpdateUserAvatarRequest {
   avatarFilename: string;
 }
 
+@injectable()
 export default class UpdateUserAvatarService {
-  constructor(private userRepository: IUserRepository) { }
+  constructor(
+    @inject('UsersRepository')
+    private userRepository: IUserRepository,
+  ) { }
 
   public async execute({
     user_id,

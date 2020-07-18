@@ -4,6 +4,7 @@ import CreateAppointmentService from '@modules/appointments/services/CreateAppoi
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 import { parseISO } from 'date-fns';
 import { Router } from 'express';
+import { container } from 'tsyringe';
 
 const appointmentsRouter = Router();
 
@@ -27,10 +28,7 @@ appointmentsRouter.post('/', async (request, response) => {
   const { provider, date } = request.body;
 
   const parsedDate = parseISO(date);
-  const appointmentsRepository: IAppointmentsRepository = new AppointmentsRepository();
-  const createAppointmentService = new CreateAppointmentService(
-    appointmentsRepository,
-  );
+  const createAppointmentService = container.resolve(CreateAppointmentService);
 
   const newAppointment = await createAppointmentService.execute({
     provider,

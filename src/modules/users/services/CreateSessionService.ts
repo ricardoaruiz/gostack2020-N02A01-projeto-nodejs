@@ -1,5 +1,6 @@
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
+import { injectable, inject } from 'tsyringe';
 
 import authConfig from '../../../config/auth';
 import AppError from '../../../shared/errors/AppError';
@@ -16,8 +17,12 @@ interface ICreateSessionResponse {
   token: string;
 }
 
+@injectable()
 export default class CreateSessionService {
-  constructor(private userRepository: IUserRepository) { }
+  constructor(
+    @inject('UsersRepository')
+    private userRepository: IUserRepository,
+  ) { }
 
   public async execute(
     data: ICreateSessionRequest,
