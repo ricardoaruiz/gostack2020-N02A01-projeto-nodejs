@@ -1,11 +1,16 @@
 import FakeUserRepository from '@modules/users/repositories/fake/FakeUsersRepository';
+import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeHashProvider';
 import CreateUserService from '@modules/users/services/CreateUserService';
 import AppError from '@shared/errors/AppError';
 
 describe('CreateUser', () => {
   it('should able to create new user', async () => {
     const fakeUserRepository = new FakeUserRepository();
-    const createUserService = new CreateUserService(fakeUserRepository);
+    const fakeHashProvider = new FakeHashProvider();
+    const createUserService = new CreateUserService(
+      fakeUserRepository,
+      fakeHashProvider,
+    );
 
     const user = await createUserService.execute({
       name: 'John Doe',
@@ -18,7 +23,11 @@ describe('CreateUser', () => {
 
   it('should not able to create new user because user already exists', async () => {
     const fakeUserRepository = new FakeUserRepository();
-    const createUserService = new CreateUserService(fakeUserRepository);
+    const fakeHashProvider = new FakeHashProvider();
+    const createUserService = new CreateUserService(
+      fakeUserRepository,
+      fakeHashProvider,
+    );
 
     fakeUserRepository.findByEmail = jest.fn().mockReturnValue({
       id: 'sfsdfdgdfg',

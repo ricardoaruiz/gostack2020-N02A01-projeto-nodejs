@@ -1,4 +1,3 @@
-import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
 
@@ -6,6 +5,7 @@ import authConfig from '../../../config/auth';
 import AppError from '../../../shared/errors/AppError';
 import User from '../infra/typeorm/entities/User';
 import IUserRepository from '../repositories/IUserRespository';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface ICreateSessionRequest {
   email: string;
@@ -22,6 +22,9 @@ export default class CreateSessionService {
   constructor(
     @inject('UsersRepository')
     private userRepository: IUserRepository,
+
+    @inject('BCryptHashProvider')
+    private hashProvider: IHashProvider,
   ) { }
 
   public async execute(
@@ -32,7 +35,10 @@ export default class CreateSessionService {
       throw new AppError('Invalid user or password', 401);
     }
 
-    const passwordMatched = await compare(data.password, user.password);
+    const passwordMatched = await this.hashProvider.compareHash(
+      data.password,
+      user.password,
+    );
     if (!passwordMatched) {
       throw new AppError('Invalid user or password', 401);
     }
