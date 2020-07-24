@@ -32,7 +32,7 @@ describe('CreateSession', () => {
     expect(response.user).toBe(user);
   });
 
-  it('should not able to create new session for wrong password', async () => {
+  it('should not be able to create new session with wrong password', async () => {
     const fakeUserRepository = new FakeUserRepository();
     const fakeHashProvider = new FakeHashProvider();
     const createUserService = new CreateUserService(
@@ -44,7 +44,7 @@ describe('CreateSession', () => {
       fakeHashProvider,
     );
 
-    const user = await createUserService.execute({
+    await createUserService.execute({
       name: 'John Doe',
       email: 'johndoe@mail.com',
       password: '123456',
@@ -58,7 +58,7 @@ describe('CreateSession', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not able to create new session to not exist user', async () => {
+  it('should not be able to create new session with non existing user', async () => {
     const fakeUserRepository = new FakeUserRepository();
     const fakeHashProvider = new FakeHashProvider();
 

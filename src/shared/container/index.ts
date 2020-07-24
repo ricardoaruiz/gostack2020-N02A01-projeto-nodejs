@@ -1,6 +1,7 @@
 // Aqui é realizado o registro do que será gerenciado pelo tsyringe para realizar
 // a injeção dessas dependências.
 // Esse arquivo é importado no server.ts
+import './providers';
 import '@modules/users/providers';
 
 import AppointmentsRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentsRepository';
