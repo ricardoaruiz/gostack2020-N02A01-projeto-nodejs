@@ -38,7 +38,7 @@ describe('CreateAppointment', () => {
 
     appointmentRepository.findByDate = jest.fn().mockReturnValue({});
 
-    expect(
+    await expect(
       createAppointmentService.execute({
         provider: '123456',
         date: new Date(),
