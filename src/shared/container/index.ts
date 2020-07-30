@@ -8,6 +8,9 @@ import AppointmentsRepository from '@modules/appointments/infra/typeorm/reposito
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentRepository';
 import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 import IUserRspository from '@modules/users/repositories/IUserRespository';
+import UserTokenRepository from '@modules/users/infra/typeorm/repositories/UsersTokenRepository';
+import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
+
 import { container } from 'tsyringe';
 
 container.registerSingleton<IAppointmentsRepository>(
@@ -18,4 +21,9 @@ container.registerSingleton<IAppointmentsRepository>(
 container.registerSingleton<IUserRspository>(
   'UsersRepository',
   UsersRepository,
+);
+
+container.registerSingleton<IUserTokensRepository>(
+  'UserTokenRepository',
+  UserTokenRepository,
 );
