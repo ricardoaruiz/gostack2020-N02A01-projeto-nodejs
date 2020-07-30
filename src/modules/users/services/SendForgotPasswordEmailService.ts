@@ -22,17 +22,27 @@ export default class SendForgotPasswordEmailService {
   ) { }
 
   public async execute({ email }: IRequest): Promise<void> {
-    const existUser = await this.userRepository.findByEmail(email);
+    const user = await this.userRepository.findByEmail(email);
 
-    if (!existUser) {
+    if (!user) {
       throw new AppError('E-mail does not exists');
     }
 
-    const { token } = await this.userTokensRepository.create(existUser.id);
+    const { token } = await this.userTokensRepository.create(user.id);
 
-    await this.mailProvider.sendMail(
-      email,
-      `Pedido de recuperação de senha recebido. => token: ${token}`,
-    );
+    await this.mailProvider.sendMail({
+      to: {
+        name: user.name,
+        email: user.email,
+      },
+      subject: 'Recuperação de senha',
+      templateData: {
+        template: 'Olá {{name}}: {{token}}',
+        variables: {
+          name: user.name,
+          token,
+        },
+      },
+    });
   }
 }
