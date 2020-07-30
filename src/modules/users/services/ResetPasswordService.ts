@@ -13,7 +13,7 @@ interface IResetPasswordRequest {
 @injectable()
 export default class ResetPasswordService {
   constructor(
-    @inject('UserRepository')
+    @inject('UsersRepository')
     private userRepository: IUserRepository,
 
     @inject('UserTokenRepository')

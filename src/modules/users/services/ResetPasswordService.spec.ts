@@ -68,12 +68,12 @@ describe('ResetPasswordService', () => {
       password: '123456',
     });
 
-    userTokenRepository.findByToken = jest.fn().mockReturnValue({
+    userTokenRepository.findByToken = jest.fn().mockReturnValueOnce({
       id: '6d366bd9-d912-4015-8900-4d51af51b796',
       token: '14b869a1-d01b-4dbe-bbae-de97849a9ac8',
       user_id,
-      createdAt: addMinutes(Date.now(), 120.1),
-      updatedAt: addMinutes(Date.now(), 120.1),
+      createdAt: addMinutes(Date.now(), 121),
+      updatedAt: addMinutes(Date.now(), 121),
     });
 
     await expect(

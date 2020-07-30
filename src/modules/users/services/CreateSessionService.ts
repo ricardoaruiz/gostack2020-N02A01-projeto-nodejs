@@ -23,7 +23,7 @@ export default class CreateSessionService {
     @inject('UsersRepository')
     private userRepository: IUserRepository,
 
-    @inject('BCryptHashProvider')
+    @inject('HashProvider')
     private hashProvider: IHashProvider,
   ) { }
 

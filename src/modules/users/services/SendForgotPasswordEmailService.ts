@@ -14,7 +14,7 @@ export default class SendForgotPasswordEmailService {
     @inject('UsersRepository')
     private userRepository: IUserRepository,
 
-    @inject('UsersRepository')
+    @inject('UserTokenRepository')
     private userTokensRepository: IUserTokensRepository,
 
     @inject('MailProvider')
@@ -32,7 +32,7 @@ export default class SendForgotPasswordEmailService {
 
     await this.mailProvider.sendMail(
       email,
-      'Pedido de recuperação de senha recebido.',
+      `Pedido de recuperação de senha recebido. => token: ${token}`,
     );
   }
 }
