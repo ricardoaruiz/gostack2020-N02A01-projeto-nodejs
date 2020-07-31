@@ -2,25 +2,18 @@ import FakeAppointmentRepository from '@modules/appointments/repositories/fake/F
 import CreateAppointmentService from '@modules/appointments/services/CreateAppointmentService';
 import AppError from '@shared/errors/AppError';
 
-// import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentRepository';
-// const appointmentRepository1: IAppointmentsRepository = {
-//   create: jest.fn(),
-//   find: jest.fn(),
-//   findByDate: jest.fn(),
-// };
+let appointmentRepository: FakeAppointmentRepository;
+let createAppointmentService: CreateAppointmentService;
 
 describe('CreateAppointment', () => {
-  it('should be able to create a new appointment', async () => {
-    const appointmentRepository = new FakeAppointmentRepository();
-    const createAppointmentService = new CreateAppointmentService(
+  beforeEach(() => {
+    appointmentRepository = new FakeAppointmentRepository();
+    createAppointmentService = new CreateAppointmentService(
       appointmentRepository,
     );
+  });
 
-    // appointmentRepository1.create = jest.fn().mockReturnValue({
-    //   id: 'abcd',
-    //   providerId: '123456',
-    // });
-
+  it('should be able to create a new appointment', async () => {
     const appointment = await createAppointmentService.execute({
       provider: '123456',
       date: new Date(),
@@ -31,11 +24,6 @@ describe('CreateAppointment', () => {
   });
 
   it('should not be able to create two appointments on the same time', async () => {
-    const appointmentRepository = new FakeAppointmentRepository();
-    const createAppointmentService = new CreateAppointmentService(
-      appointmentRepository,
-    );
-
     appointmentRepository.findByDate = jest.fn().mockReturnValue({});
 
     await expect(

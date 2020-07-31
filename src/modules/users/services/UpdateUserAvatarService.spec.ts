@@ -3,15 +3,21 @@ import UpdataUserAvatarService from '@modules/users/services/UpdateUserAvatarSer
 import AppError from '@shared/errors/AppError';
 import FakeStorageProdiver from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
 
+let fakeUserRepository: FakeUserRepository;
+let fakeStorageProvider: FakeStorageProdiver;
+let updataUserAvatarService: UpdataUserAvatarService;
+
 describe('UpdateUserAvatar', () => {
-  it('should not able to change avatar from not exists user', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeStorageProvider = new FakeStorageProdiver();
-    const updataUserAvatarService = new UpdataUserAvatarService(
+  beforeEach(() => {
+    fakeUserRepository = new FakeUserRepository();
+    fakeStorageProvider = new FakeStorageProdiver();
+    updataUserAvatarService = new UpdataUserAvatarService(
       fakeUserRepository,
       fakeStorageProvider,
     );
+  });
 
+  it('should not able to change avatar from not exists user', async () => {
     fakeUserRepository.findById = jest.fn().mockReturnValue(undefined);
 
     try {
@@ -26,13 +32,6 @@ describe('UpdateUserAvatar', () => {
   });
 
   it('should able to change avatar', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeStorageProvider = new FakeStorageProdiver();
-    const updataUserAvatarService = new UpdataUserAvatarService(
-      fakeUserRepository,
-      fakeStorageProvider,
-    );
-
     fakeUserRepository.findById = jest.fn().mockReturnValue({
       id: 'sfsdfdgdfg',
       name: 'John Doe',
@@ -52,13 +51,6 @@ describe('UpdateUserAvatar', () => {
   });
 
   it('should able to change avatar with user that has an avatar', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeStorageProvider = new FakeStorageProdiver();
-    const updataUserAvatarService = new UpdataUserAvatarService(
-      fakeUserRepository,
-      fakeStorageProvider,
-    );
-
     fakeUserRepository.findById = jest.fn().mockReturnValue({
       id: 'sfsdfdgdfg',
       name: 'John Doe',
