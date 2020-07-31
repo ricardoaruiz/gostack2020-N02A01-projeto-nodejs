@@ -34,7 +34,7 @@ export default class EtherealMailProvider implements IMailProvider {
 
   public async sendMail(data: ISendMailDTO): Promise<void> {
     const { from, to, subject, templateData } = data;
-    const { template, variables } = templateData;
+    const { file, variables } = templateData;
     const message = {
       from: {
         name: from?.name || 'Equipe GoBarber',
@@ -46,7 +46,7 @@ export default class EtherealMailProvider implements IMailProvider {
       },
       subject,
       html: await this.mailTemplateProvider.parse({
-        template,
+        file,
         variables,
       }),
     };
