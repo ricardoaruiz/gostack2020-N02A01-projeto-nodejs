@@ -16,7 +16,7 @@ interface IUpdateProfileData {
 @injectable()
 export default class UpdateProfileService {
   constructor(
-    @inject('UserRepository')
+    @inject('UsersRepository')
     private userRepository: IUserRepository,
 
     @inject('HashProvider')
