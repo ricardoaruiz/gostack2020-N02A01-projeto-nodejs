@@ -7,6 +7,8 @@ export default class FakeAppointmentsRepository
   implements IAppointmentsRepository {
   private appointments: Appointment[] = [];
 
+  constructor() { }
+
   find(): Promise<Appointment[]> {
     return Promise.resolve([]);
   }
