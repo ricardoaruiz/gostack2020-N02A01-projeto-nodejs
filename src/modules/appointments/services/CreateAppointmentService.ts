@@ -6,6 +6,7 @@ import { injectable, inject } from 'tsyringe';
 
 interface IRequest {
   provider: string;
+  customer: string;
   date: Date;
 }
 
@@ -16,7 +17,11 @@ export default class CreateAppointmentService {
     private appointmentsRepository: IAppointmentsRepository,
   ) { }
 
-  public async execute({ provider, date }: IRequest): Promise<Appointment> {
+  public async execute({
+    provider,
+    customer,
+    date,
+  }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
 
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
@@ -30,6 +35,7 @@ export default class CreateAppointmentService {
     // Cria uma entidade do typeORM mas não salvou na base ainda
     const newAppointment = await this.appointmentsRepository.create({
       providerId: provider,
+      customerId: customer,
       date: appointmentDate,
     });
 

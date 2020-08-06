@@ -19,11 +19,13 @@ export default class AppointmentsRepository implements IAppointmentsRepository {
 
   public async create({
     providerId,
+    customerId,
     date,
   }: ICreateAppointmentDTO): Promise<Appointment> {
     // Cria uma entidade do typeORM mas não salvou na base ainda
     const newAppointment = this.ormRepository.create({
       providerId,
+      customerId,
       date,
     });
     // Salva a entidade criada no banco de dados
