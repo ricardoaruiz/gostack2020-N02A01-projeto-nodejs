@@ -8,5 +8,6 @@ const providersController = new ProvidersController();
 providersRouter.use(ensureAuthenticated);
 
 providersRouter.get('/', providersController.index);
+providersRouter.get('/availability', providersController.list);
 
 export default providersRouter;

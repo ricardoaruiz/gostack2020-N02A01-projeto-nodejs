@@ -1,16 +1,13 @@
 import FakeAppointmentRepository from '@modules/appointments/repositories/fake/FakeAppointmentsRepository';
 import CreateAppointmentService from '@modules/appointments/services/CreateAppointmentService';
-import FnsDateProvider from '@shared/container/providers/DateProvider/implementations/FnsDateProvider';
 import AppError from '@shared/errors/AppError';
 
-let dateProvider: FnsDateProvider;
 let appointmentRepository: FakeAppointmentRepository;
 let createAppointmentService: CreateAppointmentService;
 
 describe('CreateAppointment', () => {
   beforeEach(() => {
-    dateProvider = new FnsDateProvider();
-    appointmentRepository = new FakeAppointmentRepository(dateProvider);
+    appointmentRepository = new FakeAppointmentRepository();
     createAppointmentService = new CreateAppointmentService(
       appointmentRepository,
     );

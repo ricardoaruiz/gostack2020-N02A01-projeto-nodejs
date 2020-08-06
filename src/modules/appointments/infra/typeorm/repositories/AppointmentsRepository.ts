@@ -1,7 +1,10 @@
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentRepository';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Repository, Between } from 'typeorm';
+import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
+import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
+import { lastDayOfMonth } from 'date-fns';
 
 export default class AppointmentsRepository implements IAppointmentsRepository {
   private ormRepository: Repository<Appointment>;
@@ -34,5 +37,53 @@ export default class AppointmentsRepository implements IAppointmentsRepository {
       where: { date },
     });
     return foundAppointment;
+  }
+
+  public async findAllInMonthFromProvider(
+    data: IFindAllInMonthFromProviderDTO,
+  ): Promise<Appointment[]> {
+    const initialDate = new Date(
+      Date.UTC(data.year, data.month - 1, 1, 0, 0, 0, 0),
+    );
+    const endDate = new Date(
+      Date.UTC(
+        data.year,
+        data.month - 1,
+        lastDayOfMonth(initialDate).getDate(),
+        23,
+        59,
+        59,
+        999,
+      ),
+    );
+
+    const appointments = await this.ormRepository.find({
+      where: {
+        providerId: data.provider_id,
+        date: Between(initialDate, endDate),
+      },
+    });
+
+    return appointments;
+  }
+
+  async findAllInDayFromProvider(
+    data: IFindAllInDayFromProviderDTO,
+  ): Promise<Appointment[]> {
+    const initialDate = new Date(
+      Date.UTC(data.year, data.month - 1, data.day, 0, 0, 0, 0),
+    );
+    const endDate = new Date(
+      Date.UTC(data.year, data.month - 1, data.day, 23, 59, 59, 999),
+    );
+
+    const appointments = await this.ormRepository.find({
+      where: {
+        providerId: data.provider_id,
+        date: Between(initialDate, endDate),
+      },
+    });
+
+    return appointments;
   }
 }
