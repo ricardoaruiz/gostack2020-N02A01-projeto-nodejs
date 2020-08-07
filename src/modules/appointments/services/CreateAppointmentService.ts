@@ -2,6 +2,7 @@ import Appointment from '@modules/appointments/infra/typeorm/entities/Appointmen
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentRepository';
 import AppError from '@shared/errors/AppError';
 import { startOfHour, isBefore, getHours } from 'date-fns';
+import { zonedTimeToUtc } from 'date-fns-tz';
 import { injectable, inject } from 'tsyringe';
 
 interface IRequest {
@@ -23,13 +24,14 @@ export default class CreateAppointmentService {
     date,
   }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
-    const now = Date.now();
+    const now = new Date(Date.now());
 
     if (provider === customer) {
       throw new AppError("You Can't create an appointment with yourself");
     }
 
-    const appointmentHour = getHours(date);
+    const appointmentHour = date.getHours();
+
     if (appointmentHour < 8 || appointmentHour > 17) {
       throw new AppError("You can't create appointment out of business hour");
     }
