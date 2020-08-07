@@ -1,8 +1,7 @@
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentRepository';
 import AppError from '@shared/errors/AppError';
-import { startOfHour, isBefore, getHours } from 'date-fns';
-import { zonedTimeToUtc } from 'date-fns-tz';
+import { startOfHour, isBefore } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
 interface IRequest {
