@@ -1,5 +1,9 @@
 // Necessário esse import para funcionar as anotações do typeORM
 import 'reflect-metadata';
+
+// Importando as configurações da biblioteca dotenv
+import 'dotenv/config';
+
 import express from 'express';
 
 // Esse import é necessário para que as rotas que usam async/await façam
