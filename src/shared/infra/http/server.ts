@@ -9,6 +9,7 @@ import express from 'express';
 import 'express-async-errors';
 
 import cors from 'cors';
+import { errors } from 'celebrate';
 
 import uploadConfig from '@config/upload';
 import globalExceptionHandler from '@shared/errors/GlobalExceptionHandler';
@@ -28,6 +29,9 @@ app.use(routes);
 // Rota para servir de forma estatica os arquivos que estão
 // na pasta de upload
 app.use('/files', express.static(uploadConfig.tempDirectory));
+
+// Configurando para que os erros de validação do celebrate sejam retornados
+app.use(errors());
 
 // Middleware Global Exception Handling que deve ser
 // definido após a definição de todas as rotas
