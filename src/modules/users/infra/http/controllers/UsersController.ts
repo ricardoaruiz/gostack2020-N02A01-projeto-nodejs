@@ -11,9 +11,7 @@ export default class UsersController {
   public async list(request: Request, response: Response): Promise<Response> {
     const userRepository: IUserRepository = new UsersRepository();
     const users = await (await userRepository.find()).map((user: User) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...newUser } = user;
-      return newUser;
+      return classToClass(user);
     });
     return response.json(users);
   }
