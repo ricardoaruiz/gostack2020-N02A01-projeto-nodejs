@@ -5,6 +5,7 @@ import CreateUserService from '@modules/users/services/CreateUserService';
 import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 export default class UsersController {
   public async list(request: Request, response: Response): Promise<Response> {
@@ -42,8 +43,6 @@ export default class UsersController {
       avatarFilename: request.file.filename,
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...userWithoutPassword } = user;
-    return response.status(200).json(userWithoutPassword);
+    return response.status(200).json(classToClass(user));
   }
 }

@@ -1,6 +1,7 @@
 import CreateSessionService from '@modules/users/services/CreateSessionService';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 export default class SessionsController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -11,8 +12,7 @@ export default class SessionsController {
       email,
       password,
     });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: removedPassword, ...userWithoutPassword } = user;
-    return response.json({ user: userWithoutPassword, token });
+
+    return response.json({ user: classToClass(user), token });
   }
 }

@@ -2,6 +2,7 @@ import ShowProfileService from '@modules/users/services/ShowProfileService';
 import UpateProfileService from '@modules/users/services/UpdateProfileService';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 interface IUpdateProfileRequest {
   name: string;
@@ -17,9 +18,8 @@ export default class UpdateProfileController {
     const showProfileService = container.resolve(ShowProfileService);
 
     const user = await showProfileService.execute(userId);
-    const { password, ...userWithoutPassword } = user;
 
-    return response.json(userWithoutPassword);
+    return response.json(classToClass(user));
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
