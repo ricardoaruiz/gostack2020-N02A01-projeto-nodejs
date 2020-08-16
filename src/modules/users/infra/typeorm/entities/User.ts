@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Exclude, Expose } from 'class-transformer';
+import uploadConfig from '@config/upload';
 
 @Entity('users')
 export default class User {
@@ -33,8 +34,17 @@ export default class User {
 
   @Expose({ name: 'avatar_url' })
   getAvatarUrl(): string | null {
-    return this.avatar
-      ? `${process.env.APP_API_URL}/files/${this.avatar}`
-      : null;
+    if (!this.avatar) {
+      return null;
+    }
+
+    switch (uploadConfig.driver) {
+      case 'disk':
+        return `${uploadConfig.config.disk.url}/files/${this.avatar}`;
+      case 's3':
+        return `${uploadConfig.config.aws.url}/${this.avatar}`;
+      default:
+        return null;
+    }
   }
 }

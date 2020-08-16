@@ -9,7 +9,7 @@ import UsersController from '../controllers/UsersController';
 // Multer para fazer o controle do upload de imagens
 const userRoutes = Router();
 const usersController = new UsersController();
-const upload = multer(uploadConfig);
+const upload = multer(uploadConfig.multer);
 
 userRoutes.get('/', usersController.list);
 userRoutes.post(
