@@ -18,6 +18,7 @@ import { errors } from 'celebrate';
 import uploadConfig from '@config/upload';
 import globalExceptionHandler from '@shared/errors/GlobalExceptionHandler';
 import routes from '@shared/infra/http/routes';
+import rateLimiter from './middlewares/rateLimiter';
 
 // Importando a configuração do typeorm (conexão com o banco de dados)
 import '@shared/infra/typeorm';
@@ -26,6 +27,7 @@ import '@shared/infra/typeorm';
 import '@shared/container';
 
 const app = express();
+app.use(rateLimiter);
 app.use(cors());
 app.use(express.json());
 app.use(routes);
