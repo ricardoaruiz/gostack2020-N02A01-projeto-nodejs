@@ -1,11 +1,13 @@
 import FakeUserRepository from '@modules/users/repositories/fake/FakeUsersRepository';
 import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeHashProvider';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import CreateSessionService from '@modules/users/services/CreateSessionService';
 import CreateUserService from '@modules/users/services/CreateUserService';
 import AppError from '@shared/errors/AppError';
 
 let fakeUserRepository: FakeUserRepository;
 let fakeHashProvider: FakeHashProvider;
+let cacheProvider: FakeCacheProvider;
 let createUserService: CreateUserService;
 let createSessionService: CreateSessionService;
 
@@ -13,9 +15,11 @@ describe('CreateSession', () => {
   beforeEach(() => {
     fakeUserRepository = new FakeUserRepository();
     fakeHashProvider = new FakeHashProvider();
+    cacheProvider = new FakeCacheProvider();
     createUserService = new CreateUserService(
       fakeUserRepository,
       fakeHashProvider,
+      cacheProvider,
     );
     createSessionService = new CreateSessionService(
       fakeUserRepository,
