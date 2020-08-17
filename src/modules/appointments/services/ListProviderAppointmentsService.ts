@@ -27,16 +27,26 @@ export default class ListProviderAppointmentsService {
     month,
     day,
   }: IRequest): Promise<Appointment[]> {
-    const appointments = await this.appointmentsRepository.findAllInDayFromProvider(
-      {
-        provider_id,
-        year,
-        month,
-        day,
-      },
+    // Busca do cache do Redis
+    const cacheKey = `provider-appointments:${provider_id}:${year}-${month}-${day}`;
+
+    let appointments = await this.chacheProvider.recover<Appointment[]>(
+      cacheKey,
     );
 
-    await this.chacheProvider.save('teste', 'Valor no redis');
+    // Se não estiver no cache busca do banco
+    if (!appointments) {
+      appointments = await this.appointmentsRepository.findAllInDayFromProvider(
+        {
+          provider_id,
+          year,
+          month,
+          day,
+        },
+      );
+
+      await this.chacheProvider.save(cacheKey, appointments);
+    }
 
     return appointments;
   }
