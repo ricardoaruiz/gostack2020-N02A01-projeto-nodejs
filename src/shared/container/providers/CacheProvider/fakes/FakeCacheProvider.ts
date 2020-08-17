@@ -1,14 +1,18 @@
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
+interface ICacheData {
+  [key: string]: string;
+}
+
 export default class FakeCacheProvider implements ICacheProvider {
-  private cache: Map<string, string> = new Map();
+  private cache: ICacheData = {};
 
   public async save(key: string, value: string): Promise<void> {
-    this.cache.set(key, value);
+    this.cache[key] = JSON.stringify(value);
   }
 
   public async recover<T>(key: string): Promise<T | null> {
-    const data = this.cache.get(key);
+    const data = this.cache[key];
 
     if (!data) {
       return null;
@@ -18,14 +22,13 @@ export default class FakeCacheProvider implements ICacheProvider {
   }
 
   public async invalidate(key: string): Promise<void> {
-    this.cache.delete(key);
+    delete this.cache[key];
   }
 
   public async invalidatePrefix(prefix: string): Promise<void> {
-    Object.keys(this.cache).forEach(key => {
-      if (key.includes(prefix)) {
-        this.cache.delete(key);
-      }
-    });
+    const keys = Object.keys(this.cache).filter(key =>
+      key.startsWith(`${prefix}:`),
+    );
+    keys.forEach(key => this.invalidate(key));
   }
 }
