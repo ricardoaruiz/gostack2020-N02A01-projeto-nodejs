@@ -9,7 +9,7 @@ export default interface IAppointmentsRepository {
 
   create(appointment: ICreateAppointmentDTO): Promise<Appointment>;
 
-  findByDate(date: Date): Promise<Appointment | undefined>;
+  findByDate(date: Date, providerId: string): Promise<Appointment | undefined>;
 
   findAllInMonthFromProvider(
     data: IFindAllInMonthFromProviderDTO,
