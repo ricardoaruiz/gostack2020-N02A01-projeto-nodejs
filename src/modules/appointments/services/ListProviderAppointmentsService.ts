@@ -1,5 +1,6 @@
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentRepository';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { classToClass } from 'class-transformer';
 import { inject, injectable } from 'tsyringe';
 
 import Appointment from '../infra/typeorm/entities/Appointment';
@@ -45,7 +46,7 @@ export default class ListProviderAppointmentsService {
         },
       );
 
-      await this.chacheProvider.save(cacheKey, appointments);
+      await this.chacheProvider.save(cacheKey, classToClass(appointments));
     }
 
     return appointments;
