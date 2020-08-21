@@ -4,7 +4,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToMany,
+  ManyToOne,
   JoinColumn,
 } from 'typeorm';
 import User from '@modules/users/infra/typeorm/entities/User';
@@ -19,7 +19,7 @@ export default class Appointment {
   providerId: string;
 
   // Representa somente o relacionamento para o typeorm
-  @ManyToMany(() => User)
+  @ManyToOne(() => User)
   @JoinColumn({ name: 'provider_id' })
   provider: User;
 
@@ -28,7 +28,7 @@ export default class Appointment {
   customerId: string;
 
   // Representa somente o relacionamento para o typeorm
-  @ManyToMany(() => User)
+  @ManyToOne(() => User)
   @JoinColumn({ name: 'customer_id' })
   customer: User;
 

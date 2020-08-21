@@ -87,6 +87,7 @@ export default class AppointmentsRepository implements IAppointmentsRepository {
         providerId: data.provider_id,
         date: Between(initialDate, endDate),
       },
+      relations: ['customer'],
     });
 
     return appointments;
