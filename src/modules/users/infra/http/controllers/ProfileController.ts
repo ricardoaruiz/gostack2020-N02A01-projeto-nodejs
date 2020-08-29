@@ -28,7 +28,7 @@ export default class UpdateProfileController {
 
     const updateProfileService = container.resolve(UpateProfileService);
 
-    await updateProfileService.execute({
+    const user = await updateProfileService.execute({
       id: userId,
       name: profileData.name,
       email: profileData.email,
@@ -36,6 +36,6 @@ export default class UpdateProfileController {
       oldPassword: profileData.old_password,
     });
 
-    return response.status(204).send();
+    return response.status(201).json(classToClass(user));
   }
 }

@@ -34,7 +34,7 @@ app.use(routes);
 
 // Rota para servir de forma estatica os arquivos que estão
 // na pasta de upload
-app.use('/files', express.static(uploadConfig.tempDirectory));
+app.use('/files', express.static(uploadConfig.uploadDirecotry));
 
 // Configurando para que os erros de validação do celebrate sejam retornados
 app.use(errors());
